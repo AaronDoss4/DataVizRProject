@@ -1,0 +1,199 @@
+---
+title: "Visualizing Bureau of Labor Statistics Umemployment Data"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(readxl)
+library(tidyverse)
+library(treemapify)
+```
+
+```{r}
+#| echo: false
+labor_data <- read_excel("Labor20-24.xlsx")
+```
+
+```{r}
+#| echo: false
+#| message: false
+unemployed_by_year <- labor_data %>%
+  group_by(Year) %>%
+  summarise(
+    total_in_market = sum(`Civilian Labor Force`),
+    total_unemployed = sum(Unemployed),
+    unemployment_rate = (total_unemployed/total_in_market) * 100
+  )
+```
+
+```{r}
+#| echo: false
+ggplot(unemployed_by_year, aes(x = Year, y = unemployment_rate)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unemployment Rate by Year",
+    x = "Year",
+    y = "Unemployment Rate (%)"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+#| echo: false
+#| message: false
+gender_count <- labor_data %>%
+  group_by(Year, Sex) %>%
+  summarise(
+    employed = sum(Employed),
+    unemployed = sum(Unemployed)
+  )
+```
+
+```{r}
+#| echo: false
+ggplot(gender_count, aes(x = employed, y = unemployed, 
+    shape = Sex,
+    color = factor(Year)
+  )
+) +
+  geom_point(size = 3) +
+  labs(
+    title = "Total Employed vs. Total Unemployed by Gender",
+    x = "Employed (Thousands)",
+    y = "Unemployed (Thousands)",
+    color = "Year",
+    shape = "Gender"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+```{r}
+#| echo: false
+#| message: false
+unmployment_by_sex <- labor_data %>%
+  group_by(Year, Sex) %>%
+  summarise(
+    unemployment_rate = sum(Unemployed) / sum(`Civilian Labor Force`) * 100)
+```
+
+```{r}
+#| echo: false
+ggplot(unmployment_by_sex,aes(x = Year,y = unemployment_rate,
+    fill = Sex)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Unmployment Rate by Sex",
+    x = "Year",
+    y = "Unemployment Rate (%)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+#| echo: false
+#| message: false
+unemployment_by_age_year <- labor_data %>%
+  group_by(Year, Age) %>%
+  summarize(
+    unemployment_rate = sum(Unemployed) / sum(`Civilian Labor Force`) * 100)
+```
+
+```{r}
+#| echo: false
+ggplot(unemployment_by_age_year, aes(x = factor(Year), y = unemployment_rate)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribution of Unemployment Rates by Age Group",
+    x = "Year",
+    y = "Unemployment Rate (%)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+```{r}
+#| echo: false
+#| message: false
+labor_force_treemap20 <- labor_data %>%
+  filter(Year == 2020) %>%
+  group_by(Age) %>%
+  summarise(
+    unemployed2020 = sum(Unemployed)
+  )
+```
+
+```{r}
+#| echo: false
+#| message: false
+labor_force_treemap24 <- labor_data %>%
+  filter(Year == 2024) %>%
+  group_by(Age) %>%
+  summarise(
+    unemployed2024 = sum(Unemployed)
+  )
+```
+
+```{r}
+#| echo: false
+ggplot(labor_force_treemap20,aes(area = unemployed2020,
+    label = paste0(Age,"\n",unemployed2020 * 1000))) +
+  geom_treemap() +
+  geom_treemap(fill = "steelblue") +
+  geom_treemap_text(
+    color = "white"
+  ) +
+  labs(
+    title = "Number Unemployed by Age Group (2020)") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+#| echo: false
+ggplot(labor_force_treemap24,aes(area = unemployed2024,
+    label = paste0(Age,"\n",unemployed2024 * 1000))) +
+  geom_treemap() +
+  geom_treemap(fill = "steelblue") +
+  geom_treemap_text(
+    color = "white"
+  ) +
+  labs(
+    title = "Number Unemployed by Age Group (2024)") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+#| echo: false
+#| message: false
+unemployment_by_age_heat <- labor_data %>%
+  group_by(Year, Age) %>%
+  summarise(
+    unemployment_rate = sum(Unemployed) / sum(`Civilian Labor Force`) * 100
+  )
+```
+
+```{r}
+#| echo: false
+ggplot(unemployment_by_age_heat,aes(x = factor(Year),y = Age,fill = unemployment_rate)) +
+  geom_tile() +
+  labs(
+    title = "Unemployment Rate by Age Group",
+    x = "Year",
+    y = "Age Group",
+    fill = "Unemployment Rate (%)"
+  ) +
+  scale_fill_viridis_c(option = "magma") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
