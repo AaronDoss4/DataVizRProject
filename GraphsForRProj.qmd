@@ -65,11 +65,11 @@ ggplot(gender_count, aes(x = employed, y = unemployed,
 ) +
   geom_point(size = 3) +
   labs(
-    title = "Total Employed vs. Total Unemployed by Gender",
+    title = "Total Employed vs. Total Unemployed by Sex",
     x = "Employed (Thousands)",
     y = "Unemployed (Thousands)",
     color = "Year",
-    shape = "Gender"
+    shape = "Sex"
   ) +
   theme_minimal() +
   theme(
@@ -197,3 +197,21 @@ ggplot(unemployment_by_age_heat,aes(x = factor(Year),y = Age,fill = unemployment
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+## Written Narrative
+
+This project examines the impact that COVID-19 had on the United States’ labor market. Specifically, it investigates how unemployment patterns vary across age groups and between males and females from 2020 to 2024. It is important to visualize how COVID-19 has impacted age groups to determine if individuals of a certain age are struggling. For example, if there is a downward trend in the unemployment rate for all age groups except one, it would be wise to conduct further research to figure out the root cause and apply a relevant intervention to ensure that group's success in the labor market. A similar course of action can be taken for the sex groups.
+
+This data was collected by the Bureau of Labor Statistics' current population survey. Specifically, it comes from a series of tables from household annual averages for the employment status of the civilian noninstitutional population by age, sex, and race (U.S. Bureau of Labor Statistics, 2025). Although this survey has been administered every year since the 2000s, only the years 2020, 2021, 2022, 2023, and 2024 were examined. 2020 was selected as the first year despite the virus’ origin being in 2019 because the World Health Organization only characterized COVID-19 as a pandemic in March of 2020 (World Health Organization, n.d.). At the time of this project, the Bureau of Labor Statistics only allows the public to access data until 2024, which is why it is the last year this project analyses. The main two categories this data has are the age and sex columns. The age column consists of multiple age groups, such as 30-34 and 65-69. Each of these age groups is split by the sex column, which is either male or female. The additional columns are civilian noninstitutional population, civilian labor force, number employed, number unemployed, and the number not in the labor force. Each of these numbers is reported in thousands, which was taken into account when the graphs display raw numbers. There were additional details for each race; however, based on how the data was presented, it was not possible to split the races by sex, which is why race was left out of this project.
+
+The first graph demonstrates that during the start of COVID-19, the unemployment rate was extremely high and eventually leveled out from 2022 onwards. The second graph shows that although the unemployment rate has decreased, there is still a large disparity in the unemployment rates for the aforementioned groups. The third graph reveals that more men than women were employed and unemployed every year, with both sexes following similar trends as far as yearly increases or decreases. The fourth graph shows that a higher proportion of women were unemployed than men in 2020 but switched in the following years. The fifth and sixth graphs display how the total number of unemployed people in each age group has shifted in 2020 and 2024. The third highest unemployment group in 2020 was 30-34 years, but in 2024 that group was overtaken by 16-19 years. The final graph shows that the unemployment rate has generally decreased over time for all age groups but has a much slower rate for the younger age groups.
+
+References
+
+U.S. Bureau of Labor Statistics. (2025). *Employment status of the civilian noninstitutional population by age, sex, and race*. https://www.bls.gov/cps/data/aa2024/cpsaat03.htm
+
+World Health Organization. (n.d.). *Coronavirus disease (COVID-19) pandemic*. https://www.who.int/europe/emergencies/situations/covid-19
+
+## Design Choices
+
+In general, all of the graphs use as little detail as possible to preserve a healthy data-to-ink ratio. The line graph is a great example of this since the only additional details that were added were points and a grid. These details were necessary to include because they significantly enhance readability, which allows the audience to clearly see changes over time. The boxplot is effective at showing the distribution of unemployment rates for each age group by sex. I was unable to figure out how to color the points based on an age group, but that addition would have increased readability by making it clear which groups were struggling the most. The scatterplot shows lots of variables in a simple manner by utilizing position, color, and shape. Since the number of employed and unemployed were a range of numbers, they were chosen as the positions. I felt that that graph was more readable if the shape had fewer categories than color, which is why sex is based on shape while year is based on color. The clustered bar graph effectively uses two distinct colors to differentiate between the proportion of females and males that are unemployed each year. The treemap has a lot of categories since it is based on age groups, so I felt that coloring the boxes would make it difficult to read, hence why every box is colored blue. The heatmap uses magma as its color scale, which clearly shows how the unemployment rate has changed over time for the age groups and which age groups are still struggling.
